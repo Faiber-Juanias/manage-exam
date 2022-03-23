@@ -18,6 +18,10 @@ public class Exam {
 	@Column(name = "nombre")
 	private String name;
 	
+	public Exam(Integer id) {
+		this.idExam = id;
+	}
+	
 	public Exam(String name) {
 		this.name = name;
 	}
