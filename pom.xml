@@ -12,7 +12,7 @@
 	<artifactId>manage-exam</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>manage-exam</name>
-	<description>Spring project to manage the all exams and students</description>
+	<description>Spring project API to manage the all exams and students</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
