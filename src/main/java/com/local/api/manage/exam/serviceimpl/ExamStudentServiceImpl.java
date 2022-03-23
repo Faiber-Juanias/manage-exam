@@ -1,5 +1,7 @@
 package com.local.api.manage.exam.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class ExamStudentServiceImpl implements IExamStudentService {
 	@Override
 	public ExamStudent saveExamAssignment(ExamStudent assignment) {
 		return this.examStudentRepo.save(assignment);
+	}
+
+	@Override
+	public List<ExamStudent> saveAllExamAssignment(List<ExamStudent> list) {
+		return this.examStudentRepo.saveAll(list);
 	}
 
 }

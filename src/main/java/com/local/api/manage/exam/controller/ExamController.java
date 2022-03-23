@@ -82,6 +82,7 @@ public class ExamController {
 	@PostMapping("/assignment")
 	public ResponseEntity<?> examAssignment(@RequestBody ExamAssignmentDateRequest assignment) {
 		ResponseApi response = null;
+		List<ExamStudent> listResult = new ArrayList<>();
 		try {
 			if (assignment != null && assignment.getIdExam() != null && 
 					assignment.getStudents() != null && assignment.getStudents().length > 0) {
@@ -92,8 +93,9 @@ public class ExamController {
 					ex.setStudent(new Student(i));
 					ex.setExamDate(assignment.getDate());
 					
-					response = ManageOutputException.manageException(HttpStatus.OK, this.examStudentService.saveExamAssignment(ex), null, null, null);
+					listResult.add(ex);
 				}
+				response = ManageOutputException.manageException(HttpStatus.OK, this.examStudentService.saveAllExamAssignment(listResult), null, null, null);
 			} else {
 				throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Todos los campos son obligatorios");
 			}
