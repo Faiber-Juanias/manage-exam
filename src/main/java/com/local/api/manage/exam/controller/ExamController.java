@@ -20,11 +20,13 @@ import com.local.api.manage.exam.entity.Question;
 import com.local.api.manage.exam.entity.Student;
 import com.local.api.manage.exam.entity.request.ExamAssignmentDateRequest;
 import com.local.api.manage.exam.entity.request.ExamRequest;
+import com.local.api.manage.exam.entity.response.ExamAssignmentDateResponse;
 import com.local.api.manage.exam.entity.response.ExamResponse;
 import com.local.api.manage.exam.error.ManageOutputException;
 import com.local.api.manage.exam.iservice.IExamService;
 import com.local.api.manage.exam.iservice.IExamStudentService;
 import com.local.api.manage.exam.iservice.IQuestionService;
+import com.local.api.manage.exam.iservice.IStudentService;
 import com.local.api.manage.exam.util.ResponseApi;
 
 @RestController
@@ -37,6 +39,8 @@ public class ExamController {
 	private IQuestionService questionService;
 	@Autowired
 	private IExamStudentService examStudentService;
+	@Autowired
+	private IStudentService studentService;
 	@Autowired
 	private ManageExamConfig config;
 
@@ -81,6 +85,7 @@ public class ExamController {
 	
 	@PostMapping("/assignment")
 	public ResponseEntity<?> examAssignment(@RequestBody ExamAssignmentDateRequest assignment) {
+		ExamAssignmentDateResponse examR = new ExamAssignmentDateResponse();
 		ResponseApi response = null;
 		List<ExamStudent> listResult = new ArrayList<>();
 		try {
@@ -95,7 +100,13 @@ public class ExamController {
 					
 					listResult.add(ex);
 				}
-				response = ManageOutputException.manageException(HttpStatus.OK, this.examStudentService.saveAllExamAssignment(listResult), null, null, null);
+				this.examStudentService.saveAllExamAssignment(listResult);
+
+				examR.setIdExam(assignment.getIdExam());
+				examR.setDate(assignment.getDate());
+				examR.setStudents(this.studentService.getAllStudentsByIds(List.of(assignment.getStudents())));
+				
+				response = ManageOutputException.manageException(HttpStatus.OK, examR, null, null, null);
 			} else {
 				throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Todos los campos son obligatorios");
 			}

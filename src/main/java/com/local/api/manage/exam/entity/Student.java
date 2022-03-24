@@ -24,6 +24,10 @@ public class Student {
 	@Column(name = "zona_horaria")
 	private String timeZone;
 	
+	public Student() {
+		
+	}
+	
 	public Student(Integer id) {
 		this.idStudent = id;
 	}
